@@ -3,15 +3,18 @@
 @using Zion.NFe.Danfe
 @using Zion.NFe.Danfe.Modelo
 @inject ILogger<Home> Logger
+@inject IMessageService MessageService
 @rendermode InteractiveServer
 
 <PageTitle>Visualizador de DANFE</PageTitle>
 
 <FluentGrid Justify="@Justification">
     <FluentGridItem xs="12">
+        <FluentMessageBarProvider />
+    </FluentGridItem>
+    <FluentGridItem xs="12">
         <FluentInputFile Id="my-file-uploader"
                          Mode="InputFileMode.SaveToTemporaryFolder"
-                         Multiple="true"
                          MaximumFileSize="@(10*1024*1024)"
                          Accept=".xml"
                          @bind-ProgressPercent="@ProgressPercent"
@@ -37,6 +40,7 @@
             <iframe id="pdfIframe" src="@PdfBase64" width="100%" height="968"></iframe>
         </FluentGridItem>
     }
+
 </FluentGrid>
 
 @code {
@@ -47,11 +51,17 @@
 
     private async Task OnCompletedAsync(IEnumerable<FluentInputFileEventArgs> files)
     {
+        MessageService.Clear();
         PdfBase64 = string.Empty;
         Files = files.ToArray();
 
         foreach (var file in Files)
         {
+            if (file.ContentType != "text/xml")
+            {
+                string message = "Selecione um arquivo XML";
+                await MessageService.ShowMessageBarAsync(message, MessageIntent.Warning);
+            }
             PdfBase64 = GerarDanfe(file);
             file.LocalFile?.Delete();
         }
