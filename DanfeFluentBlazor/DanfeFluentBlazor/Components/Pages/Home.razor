@@ -1,4 +1,8 @@
 ﻿@page "/"
+@using System.Text.Json
+@using Zion.NFe.Danfe
+@using Zion.NFe.Danfe.Modelo
+@inject ILogger<Home> Logger
 @rendermode InteractiveServer
 
 <PageTitle>Visualizador de DANFE</PageTitle>
@@ -6,13 +10,13 @@
 <FluentGrid Justify="@Justification">
     <FluentGridItem xs="12">
         <FluentInputFile Id="my-file-uploader"
-                            Mode="InputFileMode.SaveToTemporaryFolder"
-                            Multiple="true"
-                            MaximumFileSize="@(10*1024*1024)"
-                            Accept=".xml"
-                            @bind-ProgressPercent="@ProgressPercent"
-                            OnCompleted="@OnCompletedAsync"
-                            Style="height: 150px;  border: 1px dashed var(--accent-fill-rest);">
+                         Mode="InputFileMode.SaveToTemporaryFolder"
+                         Multiple="true"
+                         MaximumFileSize="@(10*1024*1024)"
+                         Accept=".xml"
+                         @bind-ProgressPercent="@ProgressPercent"
+                         OnCompleted="@OnCompletedAsync"
+                         Style="height: 150px;  border: 1px dashed var(--accent-fill-rest);">
             <ChildContent>
                 <label for="my-file-uploader">
                     <FluentIcon Value="@(new @Icons.Regular.Size24.ArrowUpload())" />
@@ -26,51 +30,52 @@
                 </div>
             </ChildContent>
         </FluentInputFile>
-
-        @if (Files.Any())
-        {
-            <FluentLabel Typo="Typography.H1"> Arquivos enviados </FluentLabel>
-            <FluentDataGrid Items="@Files.AsQueryable()">
-                <PropertyColumn Property="@(f => f.Name)" Title="Nome" Width="440px" />
-                <TemplateColumn Align="@Align.Start" Width="60px">
-                    <FluentButton Title="Baixar DANFE" aria-label="Baixar DANFE" IconEnd="@(new Icons.Regular.Size16.ArrowDownload())" />
-                </TemplateColumn>
-                <PropertyColumn Property="@(f => $"{Decimal.Divide(f.Size, 1024):N} KB")" Title="Tamanho" Width="100px" />
-                <PropertyColumn Property="@(f => f.ErrorMessage)" title="Observações" Sortable="true" />
-            </FluentDataGrid>
-            @*             <h4>File(s) uploaded:</h4>
-        <ul>
-        @foreach (var file in Files)
-        {
-        <li>
-        <b>@file.Name</b> 🔹
-        @($"{Decimal.Divide(file.Size, 1024):N} KB") 🔹
-        @file.ContentType 🔹
-        @file.LocalFile?.FullName
-        @file.ErrorMessage
-        </li>
-        }
-        </ul> *@
-        }
     </FluentGridItem>
+    @if (!string.IsNullOrWhiteSpace(PdfBase64))
+    {
+        <FluentGridItem xs="12">
+            <iframe id="pdfIframe" src="@PdfBase64" width="100%" height="968"></iframe>
+        </FluentGridItem>
+    }
 </FluentGrid>
 
 @code {
     JustifyContent Justification = JustifyContent.Center;
+    private string PdfBase64;
     int ProgressPercent = 0;
     FluentInputFileEventArgs[] Files = Array.Empty<FluentInputFileEventArgs>();
+
     private async Task OnCompletedAsync(IEnumerable<FluentInputFileEventArgs> files)
     {
+        PdfBase64 = string.Empty;
         Files = files.ToArray();
 
-        // // For the demo, delete these files.
-        // foreach (var file in Files)
-        // {
-        //     file.LocalFile?.Delete();
-        // }
+        foreach (var file in Files)
+        {
+            PdfBase64 = GerarDanfe(file);
+            file.LocalFile?.Delete();
+        }
 
-        // // Wait 3 seconds before to reset the progress bar.
-        // await Task.Delay(3000);
         ProgressPercent = 0;
     }
+
+    private string GerarDanfe(FluentInputFileEventArgs file)
+    {
+        ArgumentNullException.ThrowIfNull(file);
+        if (string.IsNullOrWhiteSpace(file.LocalFile?.FullName))
+        {
+            Logger.LogWarning(
+                $"Tentou gerar Danfe para file.LocalFile?.FullName nulo ou vazio. {JsonSerializer.Serialize(file)}");
+            return string.Empty;
+        }
+
+        //Cria o modelo a partir do arquivo Xml da NF-e.
+        var modelo = DanfeViewModelCreator.CriarDeArquivoXml(file.LocalFile.FullName);
+        using var pdfStream = new MemoryStream();
+        using var danfe = new DanfeDoc(modelo);
+        danfe.Gerar();
+        var base64String = Convert.ToBase64String(danfe.ObterPdfBytes(pdfStream));
+        return $"data:application/pdf;base64,{base64String}";
+    }
+
 }
