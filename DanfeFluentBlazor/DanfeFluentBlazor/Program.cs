@@ -1,3 +1,4 @@
+using DanfeFluentBlazor.Client.Pages;
 using DanfeFluentBlazor.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 
@@ -36,6 +37,8 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(DanfeFluentBlazor.Client._Imports).Assembly);
 
 app.Run();
