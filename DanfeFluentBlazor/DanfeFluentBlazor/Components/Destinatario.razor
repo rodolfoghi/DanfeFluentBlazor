@@ -1,0 +1,53 @@
+﻿@using NFe.Classes.Informacoes.Destinatario
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentLabel Typo="Typography.H3"> Destinatário </FluentLabel>
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="CNPJ/CPF" Value="@CnpjOuCpf" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="6">
+        <FluentTextField Label="Razão social ou nome" Value="@Dest.xNome" ReadOnly Size="100" />
+    </FluentGridItem>
+
+    <FluentGridItem xs="12">
+        <FluentLabel Typo="Typography.H4"> Endereço </FluentLabel>
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentTextField Label="Logradouro" Value="@Dest.enderDest.xLgr" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="1">
+        <FluentTextField Label="Número" Value="@Dest.enderDest.nro" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Complemento" Value="@Dest.enderDest.xCpl" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Bairro" Value="@Dest.enderDest.xBairro" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Município" Value="@Dest.enderDest.xMun" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="1">
+        <FluentTextField Label="UF" Value="@Dest.enderDest.UF.ToString()" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Telefone" Value="@Dest.enderDest.fone?.ToString()" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Inscrição estadual" Value="@Dest.IE" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentTextField Label="Inscrição municipal" Value="@Dest.IM" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="E-mail" Value="@Dest.email" ReadOnly Size="100" />
+    </FluentGridItem>
+</FluentGrid>
+
+@code {
+    [Parameter]
+    public dest Dest { get; set; }
+
+    private string CnpjOuCpf => Dest.CNPJ ?? Dest.CPF ?? string.Empty;
+}
