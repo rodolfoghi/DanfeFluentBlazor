@@ -14,9 +14,11 @@ builder.Services
         {
             opt.DisableImplicitFromServicesParameters = true;
         });
+builder.Services.AddLocalization();
 
 
 var app = builder.Build();
+app.UseRequestLocalization("pt-BR");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
