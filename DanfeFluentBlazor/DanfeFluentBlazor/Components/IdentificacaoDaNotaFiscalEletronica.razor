@@ -1,0 +1,31 @@
+﻿@using DanfeFluentBlazor.Extensions
+@using NFe.Classes
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentLabel Typo="Typography.H3"> Identificação da nota fiscal eletrônica </FluentLabel>
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Número/série" Value="@NumeroSerie" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentDatePicker Label="Emissão" Value="@nfeProc?.NFe.infNFe.ide.dhEmi.DateTime" ReadOnly />
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentTextField Label="Natureza da operação" Value="@nfeProc?.NFe.infNFe.ide.natOp" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentTextField Label="Forma de pagamento " Value="@nfeProc?.NFe.infNFe.pag.FirstOrDefault()?.detPag.FirstOrDefault()?.indPag?.GetDescription()" ReadOnly Size="100" />
+    </FluentGridItem>
+
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Operação com consumidor final" Value="@nfeProc?.NFe.infNFe.ide.indFinal?.GetDescription()" ReadOnly Size="100" />
+    </FluentGridItem>
+</FluentGrid>
+
+
+@code {
+    [Parameter]
+    public nfeProc? nfeProc { get; set; }
+
+    private string NumeroSerie => $"{nfeProc?.NFe.infNFe.ide.nNF.ToString()}/{nfeProc?.NFe.infNFe.ide.serie}";
+}

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hercules.NET.NFe.NFCe" Version="2024.8.7.2121" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
     <PackageReference Include="Zion.NFe.Danfe" Version="1.0.0.1" />
     <ProjectReference Include="..\DanfeFluentBlazor.Client\DanfeFluentBlazor.Client.csproj" />

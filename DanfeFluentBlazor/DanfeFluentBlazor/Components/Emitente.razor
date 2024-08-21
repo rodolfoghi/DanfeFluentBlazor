@@ -1,0 +1,48 @@
+﻿@using DanfeFluentBlazor.Extensions
+@using NFe.Classes
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentLabel Typo="Typography.H3"> Emitente </FluentLabel>
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="CNPJ/CPF" Value="@CnpjOuCpf" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="6">
+        <FluentTextField Label="Razão social ou nome" Value="@nfeProc?.NFe.infNFe.emit.xNome" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="4">
+        <FluentTextField Label="Nome fantasia" Value="@nfeProc?.NFe.infNFe.emit.xFant" ReadOnly Size="100" />
+    </FluentGridItem>
+
+    <FluentGridItem xs="12">
+        <FluentLabel Typo="Typography.H4"> Endereço </FluentLabel>
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentTextField Label="Logradouro" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.xLgr" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="1">
+        <FluentTextField Label="Número" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.nro" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Complemento" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.xCpl" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Bairro" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.xBairro" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Município" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.xMun" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="1">
+        <FluentTextField Label="UF" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.UF.ToString()" ReadOnly Size="100" />
+    </FluentGridItem>
+</FluentGrid>
+
+
+@code {
+    [Parameter]
+    public nfeProc? nfeProc { get; set; }
+
+    private string NumeroSerie => $"{nfeProc?.NFe.infNFe.ide.nNF.ToString()}/{nfeProc?.NFe.infNFe.ide.serie}";
+
+    private string CnpjOuCpf => nfeProc?.NFe.infNFe.emit.CNPJ ?? nfeProc?.NFe.infNFe.emit.CPF ?? string.Empty;
+}

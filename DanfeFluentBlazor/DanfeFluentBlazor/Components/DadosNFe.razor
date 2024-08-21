@@ -1,0 +1,21 @@
+﻿@using DanfeFluentBlazor.Extensions
+@using NFe.Classes
+
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentCard>
+            <IdentificacaoDaNotaFiscalEletronica nfeProc="@nfeProc" />
+        </FluentCard>
+    </FluentGridItem>
+    <FluentGridItem xs="12">
+        <FluentCard>
+            <Emitente nfeProc="@nfeProc" />
+        </FluentCard>
+    </FluentGridItem>
+</FluentGrid>
+
+
+@code {
+    [Parameter]
+    public nfeProc? nfeProc { get; set; }
+}
