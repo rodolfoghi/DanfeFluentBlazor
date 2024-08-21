@@ -1,5 +1,6 @@
 ﻿@using DanfeFluentBlazor.Extensions
 @using NFe.Classes
+@using NFe.Classes.Informacoes.Identificacao
 <FluentGrid>
     <FluentGridItem xs="12">
         <FluentLabel Typo="Typography.H3"> Identificação da nota fiscal eletrônica </FluentLabel>
@@ -8,24 +9,21 @@
         <FluentTextField Label="Número/série" Value="@NumeroSerie" ReadOnly Size="100" />
     </FluentGridItem>
     <FluentGridItem xs="2">
-        <FluentDatePicker Label="Emissão" Value="@nfeProc?.NFe.infNFe.ide.dhEmi.DateTime" ReadOnly />
+        <FluentDatePicker Label="Emissão" Value="@IdentificacaoDaNFe.dhEmi.DateTime" ReadOnly />
     </FluentGridItem>
     <FluentGridItem xs="3">
-        <FluentTextField Label="Natureza da operação" Value="@nfeProc?.NFe.infNFe.ide.natOp" ReadOnly Size="100" />
-    </FluentGridItem>
-    <FluentGridItem xs="3">
-        <FluentTextField Label="Forma de pagamento " Value="@nfeProc?.NFe.infNFe.pag.FirstOrDefault()?.detPag.FirstOrDefault()?.indPag?.GetDescription()" ReadOnly Size="100" />
+        <FluentTextField Label="Natureza da operação" Value="@IdentificacaoDaNFe.natOp" ReadOnly Size="100" />
     </FluentGridItem>
 
     <FluentGridItem xs="2">
-        <FluentTextField Label="Operação com consumidor final" Value="@nfeProc?.NFe.infNFe.ide.indFinal?.GetDescription()" ReadOnly Size="100" />
+        <FluentTextField Label="Operação com consumidor final" Value="@IdentificacaoDaNFe.indFinal?.GetDescription()" ReadOnly Size="100" />
     </FluentGridItem>
 </FluentGrid>
 
 
 @code {
     [Parameter]
-    public nfeProc? nfeProc { get; set; }
+    public ide IdentificacaoDaNFe { get; set; } = new();
 
-    private string NumeroSerie => $"{nfeProc?.NFe.infNFe.ide.nNF.ToString()}/{nfeProc?.NFe.infNFe.ide.serie}";
+    private string NumeroSerie => $"{IdentificacaoDaNFe.nNF.ToString()}/{IdentificacaoDaNFe.serie}";
 }
