@@ -35,6 +35,18 @@
     <FluentGridItem xs="1">
         <FluentTextField Label="UF" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.UF.ToString()" ReadOnly Size="100" />
     </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Telefone" Value="@nfeProc?.NFe.infNFe.emit.enderEmit.fone?.ToString()" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentTextField Label="Inscrição estadual" Value="@nfeProc?.NFe.infNFe.emit.IE" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentTextField Label="Inscrição municipal" Value="@nfeProc?.NFe.infNFe.emit.IM" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="3">
+        <FluentTextField Label="CNAE fiscal" Value="@nfeProc?.NFe.infNFe.emit.CNAE" ReadOnly Size="100" />
+    </FluentGridItem>
 </FluentGrid>
 
 
