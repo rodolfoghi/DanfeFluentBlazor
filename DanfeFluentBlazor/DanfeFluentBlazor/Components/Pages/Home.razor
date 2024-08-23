@@ -3,6 +3,7 @@
 @using NFe.Classes
 @using Zion.NFe.Danfe
 @using Zion.NFe.Danfe.Modelo
+
 @inject ILogger<Home> Logger
 @inject IMessageService MessageService
 @rendermode InteractiveServer
@@ -46,6 +47,9 @@
                 </FluentTab>
                 <FluentTab Label="Dados" Icon="@(new Icons.Regular.Size24.DataArea())" Id="tab-2">
                     <DadosNFe nfeProc="@nfeProc" />
+                </FluentTab>
+                <FluentTab Label="Produtos e serviços" Icon="@(new Icons.Filled.Size20.Box())" Id="tab-3">
+                    <ProdutosEServicos nfeProc="@nfeProc" />
                 </FluentTab>
             </FluentTabs>
         </FluentCard>

@@ -1,0 +1,70 @@
+﻿@using NFe.Classes
+@using NFe.Classes.Informacoes.Detalhe
+
+<FluentGrid>
+    <FluentGridItem xs="12">
+        <FluentAccordion>
+            @foreach (var detalhe in nfeProc.NFe.infNFe.det)
+            {
+                <FluentAccordionItem Heading="@detalhe.prod.xProd">
+                    <FluentIcon Value="@(new Icons.Regular.Size20.Cube())" Slot="start" />
+                    <FluentGrid>
+                        <FluentGridItem xs="2">
+                            <FluentTextField Label="Código do produto" Value="@detalhe.prod.cProd" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentTextField Label="NCM" Value="@detalhe.prod.NCM" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentTextField Label="CFOP" Value="@detalhe.prod.CFOP.ToString()" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="6"></FluentGridItem>
+
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Quantidade comercial" Value="@detalhe.prod.qCom" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentTextField Label="Unidade comercial " Value="@detalhe.prod.uCom" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Valor unitário" Value="@detalhe.prod.vUnCom" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Valor total bruto" Value="@detalhe.prod.vProd" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="4"></FluentGridItem>
+
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Quantidade tributável" Value="@detalhe.prod.qTrib" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentTextField Label="Unidade tributável" Value="@detalhe.prod.uTrib" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Valor unitário tributável" Value="@detalhe.prod.vUnTrib" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="6"></FluentGridItem>
+
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Frete" Value="@detalhe.prod.vFrete" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Seguro" Value="@detalhe.prod.vSeg" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Desconto" Value="@detalhe.prod.vDesc" ReadOnly Size="100" />
+                        </FluentGridItem>
+                        <FluentGridItem xs="2">
+                            <FluentNumberField Label="Outras despesas acessórias" Value="@detalhe.prod.vOutro" ReadOnly Size="100" />
+                        </FluentGridItem>
+                    </FluentGrid>
+                </FluentAccordionItem>
+            }
+        </FluentAccordion>
+    </FluentGridItem>
+</FluentGrid>
+
+@code {
+    [Parameter] public nfeProc nfeProc { get; set; } = new();
+}
+
