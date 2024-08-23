@@ -1,4 +1,5 @@
-﻿@using NFe.Classes
+﻿@using DanfeFluentBlazor.Components.Impostos
+@using NFe.Classes
 @using NFe.Classes.Informacoes.Detalhe
 @using NFe.Classes.Informacoes.Detalhe.Tributacao
 @using NFe.Classes.Informacoes.Detalhe.Tributacao.Estadual
@@ -74,21 +75,7 @@
                             </details>
                         </FluentGridItem>
 
-                        <FluentGridItem xs="1">
-                            <FluentLabel Typo="Typography.H6" Alignment="HorizontalAlignment.Right"> ICMS </FluentLabel>
-                        </FluentGridItem>
-                        <FluentGridItem xs="1">
-                            <FluentTextField Label="CST" Value="@IcmsCst(detalhe)" ReadOnly Size="100" />
-                        </FluentGridItem>
-                        <FluentGridItem xs="2">
-                            <FluentNumberField Label="Base de cálculo" Value="IcmsBaseDeCalculo(detalhe.imposto.ICMS)" ReadOnly Size="100" />
-                        </FluentGridItem>
-                        <FluentGridItem xs="1">
-                            <FluentNumberField Label="Alíquota" Value="IcmsAliquota(detalhe.imposto.ICMS)" ReadOnly Size="100" />
-                        </FluentGridItem>
-                        <FluentGridItem xs="2">
-                            <FluentNumberField Label="Valor" Value="ObterValorDoIcms(detalhe.imposto.ICMS)" ReadOnly Size="100" />
-                        </FluentGridItem>
+                        <ImpostoICMS DadosICMS="@detalhe.imposto.ICMS" />
                     </FluentGrid>
                 </FluentAccordionItem>
             }
@@ -98,100 +85,5 @@
 
 @code {
     [Parameter] public nfeProc nfeProc { get; set; } = new();
-
-    private string IcmsCst(det detalhe)
-    {
-        var tipoICMS = detalhe.imposto.ICMS.TipoICMS.GetType().ToString();
-        var cst = new String(tipoICMS.Where(Char.IsDigit).ToArray());
-
-        return cst;
-    }
-
-    private decimal IcmsBaseDeCalculo(ICMS icms)
-    {
-        if (icms.TipoICMS is ICMS00 icms00)
-        {
-            return icms00.vBC;
-        }
-        else if (icms.TipoICMS is ICMS10 icms10)
-        {
-            return icms10.vBC;
-        }
-        else if (icms.TipoICMS is ICMS20 icms20)
-        {
-            return icms20.vBC;
-        }
-        else if (icms.TipoICMS is ICMS70 icms70)
-        {
-            return icms70.vBC;
-        }
-        else if (icms.TipoICMS is ICMSPart icmsPart)
-        {
-            return icmsPart.vBC;
-        }
-
-        return 0;
-    }
-
-    private decimal IcmsAliquota(ICMS icms)
-    {
-        if (icms.TipoICMS is ICMS00 icms00)
-        {
-            return icms00.pICMS;
-        }
-
-        if (icms.TipoICMS is ICMS10 icms10)
-        {
-            return icms10.pICMS;
-        }
-
-        if (icms.TipoICMS is ICMS20 icms20)
-        {
-            return icms20.pICMS;
-        }
-
-        if (icms.TipoICMS is ICMS70 icms70)
-        {
-            return icms70.pICMS;
-        }
-
-        if (icms.TipoICMS is ICMSPart icmsPart)
-        {
-            return icmsPart.pICMS;
-        }
-
-        return 0;
-    }
-
-    public decimal ObterValorDoIcms(ICMS icms)
-    {
-        if (icms.TipoICMS is ICMS00 icms00)
-        {
-            return icms00.vICMS;
-        }
-
-        if (icms.TipoICMS is ICMS10 icms10)
-        {
-            return icms10.vICMS;
-        }
-
-        if (icms.TipoICMS is ICMS20 icms20)
-        {
-            return icms20.vICMS;
-        }
-
-        if (icms.TipoICMS is ICMS70 icms70)
-        {
-            return icms70.vICMS;
-        }
-
-        if (icms.TipoICMS is ICMSPart icmsPart)
-        {
-            return icmsPart.vICMS;
-        }
-
-        return 0;
-    }
-
 }
 

@@ -1,0 +1,114 @@
+﻿@using NFe.Classes.Informacoes.Detalhe.Tributacao.Estadual
+<Imposto NomeDoImposto="ICMS" CST="@_cst" BaseDeCalculo="@_baseDeCalculo" Aliquota="@_aliquota" Valor="@_valor" />
+
+@code {
+    [Parameter]
+    public ICMS DadosICMS { get; set; }
+
+    private string _cst = string.Empty;
+    private decimal _baseDeCalculo;
+    private decimal _aliquota;
+    private decimal _valor;
+
+    protected override void OnInitialized()
+    {
+        _cst = ObterCST();
+        _baseDeCalculo = ObterBaseDeCalculo();
+        _aliquota = ObterAliquota();
+        _valor = ObterValor();
+    }
+
+    private string ObterCST()
+    {
+        var tipoICMS = DadosICMS.TipoICMS.GetType().ToString();
+        var cst = new String(tipoICMS.Where(Char.IsDigit).ToArray());
+
+        return cst;
+    }
+
+    private decimal ObterBaseDeCalculo()
+    {
+        if (DadosICMS.TipoICMS is ICMS00 icms00)
+        {
+            return icms00.vBC;
+        }
+        else if (DadosICMS.TipoICMS is ICMS10 icms10)
+        {
+            return icms10.vBC;
+        }
+        else if (DadosICMS.TipoICMS is ICMS20 icms20)
+        {
+            return icms20.vBC;
+        }
+        else if (DadosICMS.TipoICMS is ICMS70 icms70)
+        {
+            return icms70.vBC;
+        }
+        else if (DadosICMS.TipoICMS is ICMSPart icmsPart)
+        {
+            return icmsPart.vBC;
+        }
+
+        return 0;
+    }
+
+    private decimal ObterAliquota()
+    {
+        if (DadosICMS.TipoICMS is ICMS00 icms00)
+        {
+            return icms00.pICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMS10 icms10)
+        {
+            return icms10.pICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMS20 icms20)
+        {
+            return icms20.pICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMS70 icms70)
+        {
+            return icms70.pICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMSPart icmsPart)
+        {
+            return icmsPart.pICMS;
+        }
+
+        return 0;
+    }
+
+    public decimal ObterValor()
+    {
+        if (DadosICMS.TipoICMS is ICMS00 icms00)
+        {
+            return icms00.vICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMS10 icms10)
+        {
+            return icms10.vICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMS20 icms20)
+        {
+            return icms20.vICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMS70 icms70)
+        {
+            return icms70.vICMS;
+        }
+
+        if (DadosICMS.TipoICMS is ICMSPart icmsPart)
+        {
+            return icmsPart.vICMS;
+        }
+
+        return 0;
+    }
+}

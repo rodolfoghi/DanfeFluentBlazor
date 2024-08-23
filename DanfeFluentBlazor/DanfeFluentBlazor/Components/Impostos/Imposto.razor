@@ -1,0 +1,34 @@
+﻿<FluentGrid>
+    <FluentGridItem xs="1">
+        <FluentLabel Typo="Typography.H6" Alignment="HorizontalAlignment.Right"> @NomeDoImposto </FluentLabel>
+    </FluentGridItem>
+    <FluentGridItem xs="1">
+        <FluentTextField Label="CST" Value="@CST" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentNumberField Label="Base de cálculo" Value="BaseDeCalculo" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="1">
+        <FluentNumberField Label="Alíquota" Value="Aliquota" ReadOnly Size="100" />
+    </FluentGridItem>
+    <FluentGridItem xs="2">
+        <FluentNumberField Label="Valor" Value="Valor" ReadOnly Size="100" />
+    </FluentGridItem>
+</FluentGrid>
+
+@code {
+    [Parameter]
+    public string NomeDoImposto { get; set; } = string.Empty;
+
+    [Parameter]
+    public string CST { get; set; } = string.Empty;
+
+    [Parameter]
+    public decimal BaseDeCalculo { get; set; }
+
+    [Parameter]
+    public decimal Aliquota { get; set; }
+
+    [Parameter]
+    public decimal Valor { get; set; }
+}
