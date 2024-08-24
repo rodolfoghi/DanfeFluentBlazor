@@ -1,0 +1,60 @@
+﻿@using NFe.Classes.Informacoes.Detalhe.Tributacao.Federal
+@using static DanfeFluentBlazor.Extensions.EnumExtensions;
+
+<Imposto NomeDoImposto="IPI" CST="@_cst" BaseDeCalculo="@_baseDeCalculo" Aliquota="@_aliquota" Valor="@_valor" />
+
+@code {
+    [Parameter]
+    public IPI DadosIPI { get; set; }
+
+    private string _cst = string.Empty;
+    private decimal _baseDeCalculo;
+    private decimal _aliquota;
+    private decimal _valor;
+
+    protected override void OnInitialized()
+    {
+        _cst = ObterCST();
+        _baseDeCalculo = ObterBaseDeCalculo();
+        _aliquota = ObterAliquota();
+        _valor = ObterValor();
+    }
+
+    private decimal ObterValor()
+    {
+        return DadosIPI.TipoIPI switch
+        {
+            IPITrib ipiTrib => ipiTrib.vIPI ?? 0,
+            _ => 0
+        };
+    }
+
+    private decimal ObterAliquota()
+    {
+        return DadosIPI.TipoIPI switch
+        {
+            IPITrib ipiTrib => ipiTrib.pIPI ?? 0,
+            _ => 0
+        };
+    }
+
+    private decimal ObterBaseDeCalculo()
+    {
+        return DadosIPI.TipoIPI switch
+        {
+            IPITrib ipiTrib => ipiTrib.vBC ?? 0,
+            _ => 0
+        };
+    }
+
+    private string ObterCST()
+    {
+        return DadosIPI.TipoIPI switch
+        {
+            IPITrib ipiTrib => GetXmlEnumValue(ipiTrib.CST),
+            IPINT ipint => GetXmlEnumValue(ipint.CST),
+            _ => string.Empty
+        };
+    }
+
+}
