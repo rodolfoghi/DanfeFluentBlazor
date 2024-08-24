@@ -1,6 +1,5 @@
 ﻿@using NFe.Classes.Informacoes.Detalhe.Tributacao.Federal
-@using System.Reflection
-@using System.Xml.Serialization
+@using static Extensions.EnumExtensions
 
 <Imposto NomeDoImposto="PIS" CST="@_cst" BaseDeCalculo="@_baseDeCalculo" Aliquota="@_aliquota" Valor="@_valor" />
 
@@ -112,18 +111,5 @@
         }
 
         return 0;
-    }
-
-    public static string GetXmlEnumValue(Enum enumValue)
-    {
-        FieldInfo fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
-        XmlEnumAttribute[] attributes = (XmlEnumAttribute[])fieldInfo.GetCustomAttributes(typeof(XmlEnumAttribute), false);
-
-        if (attributes.Length > 0)
-        {
-            return attributes[0]?.Name!;
-        }
-
-        return string.Empty;
     }
 }

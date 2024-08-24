@@ -1,0 +1,115 @@
+﻿@using static DanfeFluentBlazor.Extensions.EnumExtensions
+@using NFe.Classes.Informacoes.Detalhe.Tributacao.Federal
+
+<Imposto NomeDoImposto="COFINS" CST="@_cst" BaseDeCalculo="@_baseDeCalculo" Aliquota="@_aliquota" Valor="@_valor" />
+
+@code {
+    [Parameter]
+    public COFINS DadosCOFINS { get; set; }
+
+    private string _cst = string.Empty;
+    private decimal _baseDeCalculo;
+    private decimal _aliquota;
+    private decimal _valor;
+
+    protected override void OnInitialized()
+    {
+        _cst = ObterCST();
+        _baseDeCalculo = ObterBaseDeCalculo();
+        _aliquota = ObterAliquota();
+        _valor = ObterValor();
+    }
+
+    private string ObterCST()
+    {
+        var tipoCOFINS = DadosCOFINS.TipoCOFINS;
+
+        if (tipoCOFINS is COFINSAliq COFINSAliq)
+        {
+            return GetXmlEnumValue(COFINSAliq.CST);
+        }
+
+        if (tipoCOFINS is COFINSQtde COFINSQtde)
+        {
+            return GetXmlEnumValue(COFINSQtde.CST);
+        }
+
+        if (tipoCOFINS is COFINSNT COFINSNT)
+        {
+            return GetXmlEnumValue(COFINSNT.CST);
+        }
+
+        if (tipoCOFINS is COFINSOutr COFINSOutr)
+        {
+            return GetXmlEnumValue(COFINSOutr.CST);
+        }
+
+        return string.Empty;
+    }
+
+    private decimal ObterBaseDeCalculo()
+    {
+        var tipoCOFINS = DadosCOFINS.TipoCOFINS;
+
+        if (tipoCOFINS is COFINSAliq COFINSAliq)
+        {
+            return COFINSAliq.vBC;
+        }
+
+        if (tipoCOFINS is COFINSQtde COFINSQtde)
+        {
+            return COFINSQtde.qBCProd;
+        }
+
+        if (tipoCOFINS is COFINSOutr COFINSOutr)
+        {
+            return COFINSOutr.vBC ?? 0;
+        }
+
+        return 0;
+    }
+
+    private decimal ObterAliquota()
+    {
+        var tipoCOFINS = DadosCOFINS.TipoCOFINS;
+
+        if (tipoCOFINS is COFINSAliq COFINSAliq)
+        {
+            return COFINSAliq.pCOFINS;
+        }
+
+        if (tipoCOFINS is COFINSQtde COFINSQtde)
+        {
+            return COFINSQtde.vAliqProd;
+        }
+
+        if (tipoCOFINS is COFINSOutr COFINSOutr)
+        {
+            return COFINSOutr.pCOFINS ?? 0;
+        }
+
+        return 0;
+    }
+
+    private decimal ObterValor()
+    {
+        var tipoCOFINS = DadosCOFINS.TipoCOFINS;
+
+        if (tipoCOFINS is COFINSAliq COFINSAliq)
+        {
+            return COFINSAliq.vCOFINS;
+        }
+
+        if (tipoCOFINS is COFINSQtde COFINSQtde)
+        {
+            return COFINSQtde.vCOFINS;
+        }
+
+        if (tipoCOFINS is COFINSOutr COFINSOutr)
+        {
+            return COFINSOutr.vCOFINS ?? 0;
+        }
+
+        return 0;
+    }
+}

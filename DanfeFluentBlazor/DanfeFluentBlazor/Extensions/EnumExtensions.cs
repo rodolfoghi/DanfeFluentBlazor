@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
+using System.Xml.Serialization;
 
 namespace DanfeFluentBlazor.Extensions;
 
 public static class EnumExtensions
 {
-    static public string GetDescription(this Enum enumValue)
+    public static string GetDescription(this Enum enumValue)
     {
         var field = enumValue.GetType().GetField(enumValue.ToString());
         if (field == null)
@@ -17,5 +19,18 @@ public static class EnumExtensions
         }
 
         return enumValue.ToString();
+    }
+
+    public static string GetXmlEnumValue(Enum enumValue)
+    {
+        FieldInfo fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+        XmlEnumAttribute[] attributes = (XmlEnumAttribute[])fieldInfo.GetCustomAttributes(typeof(XmlEnumAttribute), false);
+
+        if (attributes.Length > 0)
+        {
+            return attributes[0]?.Name!;
+        }
+
+        return string.Empty;
     }
 }
